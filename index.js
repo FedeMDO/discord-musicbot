@@ -1,5 +1,6 @@
 const http = require('http')
-const Discord = require('discord.js')
+''const Discord = require('discord.js')
+const express = require('express')
 const {
     prefix,
     token,
@@ -7,11 +8,18 @@ const {
 const ytdl = require('ytdl-core')
 const { getInfo } = require('ytdl-getinfo')
 
-//create a server object:
-http.createServer((req, res) => {
-    res.write('Hello World!') //write a response to the client
-    res.end() //end the response
-}).listen(8080) //the server object listens on port 8080
+const PORT = 8080
+
+const server = express()
+  .use((req, res) => res.send("Hello world") )
+  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+  
+const io = socketIO(server);
+
+io.on('connection', (socket) => {
+    console.log('Client connected');
+    socket.on('disconnect', () => console.log('Client disconnected'));
+  });
 
 const client = new Discord.Client();
 const queue = new Map();

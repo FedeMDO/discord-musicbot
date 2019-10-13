@@ -11,9 +11,11 @@
   "license": "ISC",
   "dependencies": {
     "discord.js": "^11.5.1",
+    "express": "^4.17.1",
     "ffmpeg-binaries": "^4.0.0",
     "http-server": "^0.11.1",
     "opusscript": "0.0.7",
+    "socket.io": "^2.3.0",
     "ytdl-core": "^1.0.0",
     "ytdl-getinfo": "^1.1.0"
   },
