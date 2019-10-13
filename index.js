@@ -1,7 +1,5 @@
 const http = require('http')
-const socketIO = require('socket.io')
 const Discord = require('discord.js')
-const express = require('express')
 const {
     prefix,
     token,
@@ -9,18 +7,11 @@ const {
 const ytdl = require('ytdl-core')
 const { getInfo } = require('ytdl-getinfo')
 
-const PORT = 8080
-
-const server = express()
-  .use((req, res) => res.send("Hello world") )
-  .listen(PORT, () => console.log('listening on ' + PORT));
-  
-const io = socketIO(server);
-
-io.on('connection', (socket) => {
-    console.log('Client connected');
-    socket.on('disconnect', () => console.log('Client disconnected'));
-  });
+//create a server object:
+http.createServer((req, res) => {
+    res.write('Hello World!') //write a response to the client
+    res.end() //end the response
+}).listen(8080) //the server object listens on port 8080
 
 const client = new Discord.Client();
 const queue = new Map();
@@ -120,7 +111,7 @@ async function execute(message, serverQueue) {
 		try {
 			var connection = await voiceChannel.join();
 			queueContruct.connection = connection;
-            play(message.guild, queueContruct.songs[0], message);
+            play(message.guild, queueContruct.songs[0]);
             message.channel.send('Reproduciendo `'+ song.title + '`')
 		} catch (err) {
 			console.log(err);
@@ -152,14 +143,14 @@ function stop(message, serverQueue) {
     }
 }
 
-function play(guild, song, message) {
+function play(guild, song) {
 	const serverQueue = queue.get(guild.id);
 	if (!song) {
 		//serverQueue.voiceChannel.leave();
 		queue.delete(guild.id);
 		return; 
-    }
-    
+	}
+
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 		.on('end', () => {
 			console.log('Music ended!');
@@ -167,8 +158,7 @@ function play(guild, song, message) {
             play(guild, serverQueue.songs[0]);
 		})
 		.on('error', error => {
-            message.channel.send('Error! \n' + error);
-            console.error(error);
+			console.error(error);
         })
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 }
