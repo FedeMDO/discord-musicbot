@@ -6,12 +6,13 @@ const {
 } = require('./config.json')
 const ytdl = require('ytdl-core')
 const { getInfo } = require('ytdl-getinfo')
-
+var server_port = process.env.YOUR_PORT || process.env.PORT || 80;
+var server_host = process.env.YOUR_HOST || '0.0.0.0';
 //create a server object:
 http.createServer((req, res) => {
     res.write('Hello World!') //write a response to the client
     res.end() //end the response
-}).listen(8080) //the server object listens on port 8080
+}).listen(server_port, server_host) //the server object listens on port 8080
 
 const client = new Discord.Client();
 const queue = new Map();
