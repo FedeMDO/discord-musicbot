@@ -1,5 +1,6 @@
 const http = require('http')
-''const Discord = require('discord.js')
+const socketIO = require('socket.io')
+const Discord = require('discord.js')
 const express = require('express')
 const {
     prefix,
