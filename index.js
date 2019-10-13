@@ -13,7 +13,7 @@ const PORT = 8080
 
 const server = express()
   .use((req, res) => res.send("Hello world") )
-  .listen(PORT, () => console.log(`Listening on ${ PORT }`));
+  .listen(PORT, () => console.log('listening on ' + PORT));
   
 const io = socketIO(server);
 
