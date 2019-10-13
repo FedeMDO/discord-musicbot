@@ -120,7 +120,7 @@ async function execute(message, serverQueue) {
 		try {
 			var connection = await voiceChannel.join();
 			queueContruct.connection = connection;
-            play(message.guild, queueContruct.songs[0]);
+            play(message.guild, queueContruct.songs[0], message);
             message.channel.send('Reproduciendo `'+ song.title + '`')
 		} catch (err) {
 			console.log(err);
@@ -152,14 +152,14 @@ function stop(message, serverQueue) {
     }
 }
 
-function play(guild, song) {
+function play(guild, song, message) {
 	const serverQueue = queue.get(guild.id);
 	if (!song) {
 		//serverQueue.voiceChannel.leave();
 		queue.delete(guild.id);
 		return; 
-	}
-
+    }
+    
 	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
 		.on('end', () => {
 			console.log('Music ended!');
@@ -167,7 +167,8 @@ function play(guild, song) {
             play(guild, serverQueue.songs[0]);
 		})
 		.on('error', error => {
-			console.error(error);
+            message.channel.send('Error! \n' + error);
+            console.error(error);
         })
 	dispatcher.setVolumeLogarithmic(serverQueue.volume / 5);
 }
