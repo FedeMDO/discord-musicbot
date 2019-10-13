@@ -112,7 +112,7 @@ async function execute(message, serverQueue) {
 			var connection = await voiceChannel.join();
 			queueContruct.connection = connection;
             play(message.guild, queueContruct.songs[0]);
-            message.channel.send(`Reproduciendo ``${song.title}```)
+            message.channel.send('Reproduciendo `'+ song.title + '`')
 		} catch (err) {
 			console.log(err);
 			queue.delete(message.guild.id);
