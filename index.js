@@ -89,7 +89,6 @@ async function execute(message, serverQueue) {
 
     // console.log(message.content.slice(9))
     const songInfo = await getInfo(args);
-    console.log(songInfo)
 	const song = {
 		title: songInfo.items[0].title,
 		url: songInfo.items[0].webpage_url
@@ -152,7 +151,7 @@ function play(guild, song) {
 		return; 
 	}
 
-	const dispatcher = serverQueue.connection.playStream(ytdl(song.url))
+	const dispatcher = serverQueue.connection.playStream(ytdl(song.url, ))
 		.on('end', () => {
 			console.log('Music ended!');
             serverQueue.songs.shift();
